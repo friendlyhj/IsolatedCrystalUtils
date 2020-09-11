@@ -89,10 +89,12 @@ public class TileHotAirChecker extends TileEntity implements ITickable, IHotAir 
         return this.airTemp > this.setTemp;
     }
 
+    @Override
     public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
         return capability == CapabilityHotAir.HOT_AIR && (facing == EnumFacing.UP || facing == null) || super.hasCapability(capability, facing);
     }
 
+    @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
         return capability != CapabilityHotAir.HOT_AIR || facing != EnumFacing.UP && facing != null ? super.getCapability(capability, facing) : CapabilityHotAir.HOT_AIR.cast(this);
     }
