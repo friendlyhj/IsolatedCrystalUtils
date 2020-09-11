@@ -1,0 +1,21 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_bottom_top",
+    "textures": {
+      "top": "prodigytech:blocks/machine_air_hatch",
+      "bottom": "prodigytech:blocks/machine_air_hatch",
+      "side": "isolatedcrystalutils:blocks/hot_air_checker"
+    }
+  },
+  "variants": {
+    "normal": [{}],
+    "activated=true": [{}],
+    "activated=false": [{}],
+    "inventory": [
+      {
+        "transform": "forge:default-block"
+      }
+    ]
+  }
+}
