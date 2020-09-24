@@ -25,6 +25,7 @@ public class DupeTNTBanner {
     public static void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
         Entity entity = event.getEntity();
+        if (world.isRemote) return;
         DupeType dupeType = getDumpType(entity);
         if (dupeType.isValid() && check(world, entity.getPosition())) {
             event.setCanceled(true);
