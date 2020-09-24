@@ -1,16 +1,10 @@
 [
-{
-  "modid": "isolatedcrystalutils",
-  "name": "Isolated Crystal Utils",
-  "description": "For Isolated Crystal Modpack",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
-  "updateUrl": "",
-  "authorList": ["youyihj"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "dependencies": []
-}
+    {
+      "modid": "isolatedcrystalutils",
+      "name": "Isolated Crystal Utils",
+      "description": "For Isolated Crystal Modpack",
+      "version": "${version}",
+      "mcversion": "1.12.2",
+      "authorList": ["youyihj"],
+    }
 ]
