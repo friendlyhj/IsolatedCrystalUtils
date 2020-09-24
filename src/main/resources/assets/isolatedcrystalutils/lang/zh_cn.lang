@@ -3,3 +3,4 @@ tile.isolatedcrystalutils.hot_air_checker.name=热空气检测器
 iscu.tooltip.warp_obsidian=手持末影之眼右击它以传送至末地
 iscu.message.tweak_hot_air_checker=阈值温度设置为 %s °C
 iscu.message.tnt_duper=发现一位玩家试图刷 TNT，已被禁止！
+iscu.message.carpet_duper=发现一位玩家试图刷地毯，已被禁止！

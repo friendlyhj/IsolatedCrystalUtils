@@ -25,21 +25,26 @@ public class DupeTNTBanner {
     public static void onEntityJoin(EntityJoinWorldEvent event) {
         World world = event.getWorld();
         Entity entity = event.getEntity();
-        if (world.isRemote) return;
-        if (entity instanceof EntityTNTPrimed && check(world, entity.getPosition())) {
+        DupeType dupeType = getDumpType(entity);
+        if (dupeType.isValid() && check(world, entity.getPosition())) {
             event.setCanceled(true);
-            notifyAllPlayer(world);
-        } else if (entity instanceof EntityItem) {
-            Item item = ((EntityItem) entity).getItem().getItem();
-            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockCarpet) {
-                event.setCanceled(check(world, entity.getPosition()));
-                notifyAllPlayer(world);
-            }
+            notifyAllPlayer(world, dupeType);
         }
     }
 
-    private static void notifyAllPlayer(World world) {
-        world.playerEntities.forEach(player -> player.sendMessage(new TextComponentTranslation("iscu.message.tnt_duper")));
+    private static void notifyAllPlayer(World world, DupeType dupeType) {
+        world.playerEntities.forEach(player -> {
+            String key = null;
+            switch (dupeType) {
+                case TNT:
+                    key = "iscu.message.tnt_duper";
+                    break;
+                case CARPET:
+                    key = "iscu.message.carpet_duper";
+                    break;
+            }
+            if (Objects.nonNull(key)) player.sendMessage(new TextComponentTranslation(key));
+        });
     }
 
     private static boolean check(World world, BlockPos pos) {
@@ -53,5 +58,26 @@ public class DupeTNTBanner {
             }
         }
         return false;
+    }
+
+    private static DupeType getDumpType(Entity entity) {
+        if (entity instanceof EntityTNTPrimed) return DupeType.TNT;
+        if (entity instanceof EntityItem) {
+            Item item = ((EntityItem) entity).getItem().getItem();
+            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockCarpet) {
+                return DupeType.CARPET;
+            }
+        }
+        return DupeType.INVALID;
+    }
+
+    private enum DupeType {
+        INVALID,
+        TNT,
+        CARPET;
+
+        public boolean isValid() {
+            return this != INVALID;
+        }
     }
 }
