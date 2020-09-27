@@ -4,3 +4,4 @@ iscu.tooltip.warp_obsidian=Holding Eye of Ender, right-click it to transport to 
 iscu.message.tweak_hot_air_checker=Threshold temperature set to %s °C
 iscu.message.tnt_duper=Detect one player trying duplicating TNT, which is banned!
 iscu.message.carpet_duper=Detect one player trying duplicating carpet, which is banned!
+iscu.message.rail_duper=Detect one player trying duplicating rail, which is banned!

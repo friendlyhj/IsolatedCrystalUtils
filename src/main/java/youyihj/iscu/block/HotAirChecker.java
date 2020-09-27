@@ -21,6 +21,7 @@ import youyihj.iscu.tile.TileHotAirChecker;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class HotAirChecker extends Block {
     public static final PropertyBool ACTIVATED = PropertyBool.create("activated");
 

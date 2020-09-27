@@ -1,10 +1,13 @@
 package youyihj.iscu.event;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockCarpet;
+import net.minecraft.block.BlockRailBase;
 import net.minecraft.block.BlockSlime;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityTNTPrimed;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
@@ -26,26 +29,18 @@ public class DupeTNTBanner {
         World world = event.getWorld();
         Entity entity = event.getEntity();
         if (world.isRemote) return;
-        DupeType dupeType = getDumpType(entity);
+        DupeType dupeType = getDupeType(entity);
         if (dupeType.isValid() && check(world, entity.getPosition())) {
             event.setCanceled(true);
-            notifyAllPlayer(world, dupeType);
+            notifyPlayer(world, dupeType, entity);
         }
     }
 
-    private static void notifyAllPlayer(World world, DupeType dupeType) {
-        world.playerEntities.forEach(player -> {
-            String key = null;
-            switch (dupeType) {
-                case TNT:
-                    key = "iscu.message.tnt_duper";
-                    break;
-                case CARPET:
-                    key = "iscu.message.carpet_duper";
-                    break;
-            }
-            if (Objects.nonNull(key)) player.sendMessage(new TextComponentTranslation(key));
-        });
+    private static void notifyPlayer(World world, DupeType dupeType, Entity entity) {
+        EntityPlayer player = world.getClosestPlayerToEntity(entity, 16.0d);
+        if (Objects.nonNull(player)) {
+            player.sendMessage(new TextComponentTranslation(String.format("iscu.message.%s_duper", dupeType.name().toLowerCase())));
+        }
     }
 
     private static boolean check(World world, BlockPos pos) {
@@ -61,12 +56,14 @@ public class DupeTNTBanner {
         return false;
     }
 
-    private static DupeType getDumpType(Entity entity) {
+    private static DupeType getDupeType(Entity entity) {
         if (entity instanceof EntityTNTPrimed) return DupeType.TNT;
         if (entity instanceof EntityItem) {
             Item item = ((EntityItem) entity).getItem().getItem();
-            if (item instanceof ItemBlock && ((ItemBlock) item).getBlock() instanceof BlockCarpet) {
-                return DupeType.CARPET;
+            if (item instanceof ItemBlock) {
+                Block block = ((ItemBlock) item).getBlock();
+                if (block instanceof BlockCarpet) return DupeType.CARPET;
+                if (block instanceof BlockRailBase) return DupeType.RAIL;
             }
         }
         return DupeType.INVALID;
@@ -75,7 +72,8 @@ public class DupeTNTBanner {
     private enum DupeType {
         INVALID,
         TNT,
-        CARPET;
+        CARPET,
+        RAIL;
 
         public boolean isValid() {
             return this != INVALID;
